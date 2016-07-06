@@ -3,6 +3,7 @@
 import KeenQuery from 'keen-query';
 import querystring from 'querystring';
 import {renderChart} from '../components/chart';
+import keenIO from 'keen.io';
 
 // const debounce = function(fn,delay){
 // 		let timeoutId;
@@ -131,6 +132,40 @@ module.exports = {
 			return renderChart(output, kq, {})
 		}
 
+		function getRecordings () {
+			// TODO build the actual query from user input
+			let timeframe = timeframe || 'this_90_days';
+			const query = new keenIO.Query('extraction', {
+				timeframe: timeframe,
+				event_collection: 'cta:click',
+				// filters:
+				property_names: ['device.spoorId', 'keen.id'],
+				latest: 10
+			});
+
+			return new Promise((resolve, reject) => {
+				try {
+					const keen = keenIO.configure({
+						projectId: KEEN_PROJECT_ID,
+						readKey: KEEN_READ_KEY
+					});
+					keen.run(query, (error, response) => {
+						if (error) {
+							throw 'Error response from keen API: ' + error;
+						}
+
+						// fetch(PERSEPCTIVE_API_ENDPOINT).then(function (data) {
+						// 	buildTable(data)
+						// });
+
+						resolve(response);
+					});
+				} catch (error) {
+					reject(error);
+				}
+			});
+		}
+
 		input.addEventListener('keydown', ev => {
 			if (ev.keyCode === 13 && !ev.shiftKey) {
 				ev.preventDefault();
@@ -159,6 +194,13 @@ module.exports = {
 		del.on('click', '.query-wizard__clear-output', ev => {
 			ev.preventDefault();
 			output.innerHTML = '';
+		})
+
+		del.on('click', '.query-wizard__recordings', ev => {
+			ev.preventDefault();
+			getRecordings().then(function (stuff) {
+				output.innerHTML = stuff;
+			});
 		})
 
 		del.on('click', '.query-wizard__copy-yaml', () => {
@@ -218,6 +260,8 @@ module.exports = {
 		// 		input.focus();
 		// 	}
 		// })
+
+		//https://eu.mouseflow.com/websites/3d6fc486-2914-4efc-a5ae-35a5eac972f2/recordings?vars=spoorId%3Dciofi1w6k00003i77u3g8qyg3
 
 	}
 }
