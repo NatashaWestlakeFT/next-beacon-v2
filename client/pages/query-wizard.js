@@ -146,8 +146,8 @@ module.exports = {
 			return new Promise((resolve, reject) => {
 				try {
 					const keen = keenIO.configure({
-						projectId: KEEN_PROJECT_ID,
-						readKey: KEEN_READ_KEY
+						projectId: window.KEEN_PROJECT_ID,
+						readKey: window.KEEN_READ_KEY
 					});
 					keen.run(query, (error, response) => {
 						if (error) {
