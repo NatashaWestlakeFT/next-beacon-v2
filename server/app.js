@@ -10,6 +10,7 @@ const dashboards = require('./lib/dashboards');
 const express = require('@financial-times/n-express');
 const cookieParser	= require('cookie-parser');
 const mouseflow = require('./api/mouseflow');
+const bodyParser = require('body-parser');
 
 const app = module.exports = express({
 	layoutsDir: __dirname + '/../views/layouts',
@@ -114,6 +115,7 @@ app.get('/', function (req, res, next) {
   next();
 }, require('./controllers/dashboard'));
 
+app.use(bodyParser.json());
 app.post('/api/mouseflow', mouseflow);
 
 aliases.poll()

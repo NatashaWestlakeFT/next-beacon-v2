@@ -143,13 +143,23 @@ module.exports = {
 			// 	latest: 10 // dates
 			// });
 
-			return fetch('http://local.ft.com:3002/api/mouseflow', {// tODO
+			const fakeBody = {
+				'spoorIds': ['fakespoorid','ciofi1w6k00003i77u3g8qyg3','another'],
+				'params' : {
+					'entry': '/signup',
+					'browser': 'chrome',
+					'device': 'desktop',
+					'fromdate': '2015-10-04',
+					'todate': '2016-10-15'
+				}
+			}
+
+			return fetch('http://local.ft.com:3002/api/mouseflow', { // TODO
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
 					},
-					// mode: 'no-cors',
-					body: JSON.stringify({fake:'body'})
+					body: JSON.stringify(fakeBody)
 				})
 				.then((response) => {
 					return response.text()
