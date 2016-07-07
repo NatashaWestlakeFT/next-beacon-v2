@@ -1,0 +1,16 @@
+<table class="o-table o-table--responsive-scroll" data-o-component="o-table">
+	<thead>
+		<th>Recording</th>
+		<th>Duration</th>
+		<th>Pages Visited</th>
+	</thead>
+	<tbody>
+		{{#each .}}
+		<tr>
+			<td>{{spoorId}}</td>
+			<td>{{duration}}</td>
+			<td>{{pages}}</td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>

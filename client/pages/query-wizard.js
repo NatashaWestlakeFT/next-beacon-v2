@@ -135,36 +135,34 @@ module.exports = {
 		function getRecordings () {
 			// TODO build the actual query from user input
 			let timeframe = timeframe || 'this_90_days';
-			const query = new keenIO.Query('extraction', {
-				timeframe: timeframe,
-				event_collection: 'cta:click',
-				// filters:
-				property_names: ['device.spoorId', 'keen.id'],
-				latest: 10
-			});
+			// const query = new keenIO.Query('extraction', {
+			// 	timeframe: timeframe,
+			// 	event_collection: 'cta:click',
+			// 	// filters:
+			// 	property_names: ['device.spoorId', 'keen.id'],
+			// 	latest: 10 // dates
+			// });
 
-			return new Promise((resolve, reject) => {
-				try {
-					const keen = keenIO.configure({
-						projectId: window.KEEN_PROJECT_ID,
-						readKey: window.KEEN_READ_KEY
-					});
-					keen.run(query, (error, response) => {
-						if (error) {
-							throw 'Error response from keen API: ' + error;
-						}
-
-						// fetch(PERSEPCTIVE_API_ENDPOINT).then(function (data) {
-						// 	buildTable(data)
-						// });
-
-						resolve(response);
-					});
-				} catch (error) {
-					reject(error);
-				}
-			});
+			return fetch('http://local.ft.com:3002/api/mouseflow', {// tODO
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					// mode: 'no-cors',
+					body: JSON.stringify({fake:'body'})
+				})
+				.then((response) => {
+					return response.text()
+				})
+				.then((markup) => {
+					return markup;
+				})
+				.catch((error) => {
+					// TODO
+					console.log('error', error)
+				});
 		}
+
 
 		input.addEventListener('keydown', ev => {
 			if (ev.keyCode === 13 && !ev.shiftKey) {
@@ -183,8 +181,6 @@ module.exports = {
 			run();
 		})
 
-
-
 		del.on('click', '.query-wizard__reference--starters .o-buttons, .query-wizard__reference--collections .o-buttons', ev => {
 			input.value = ev.target.getAttribute('data-str');
 			output.innerHTML = '';
@@ -198,9 +194,17 @@ module.exports = {
 
 		del.on('click', '.query-wizard__recordings', ev => {
 			ev.preventDefault();
-			getRecordings().then(function (stuff) {
-				output.innerHTML = stuff;
-			});
+
+			// TODO show progress
+			getRecordings()
+				.then((table) => {
+					output.innerHTML = table;
+					// TODO hide progress
+				})
+				.catch((err) => {
+					// TODO
+					throw err;
+				});
 		})
 
 		del.on('click', '.query-wizard__copy-yaml', () => {
@@ -209,12 +213,12 @@ module.exports = {
 			const copyTextarea = document.createElement('textarea');
 			let yaml =`
   -
-    question: Enter a title for the chart in the form of a question
-    name: Enter a name for your chart to be used as its url e.g. "users/daily"
-    query: "${kq.toString()}"`;
+	question: Enter a title for the chart in the form of a question
+	name: Enter a name for your chart to be used as its url e.g. "users/daily"
+	query: "${kq.toString()}"`;
 			if (queryConf.printer) {
 				yaml +=`
-    printer: ${queryConf.printer}`;
+	printer: ${queryConf.printer}`;
 			}
 			copyTextarea.textContent = yaml;
 			document.documentElement.appendChild(copyTextarea);
