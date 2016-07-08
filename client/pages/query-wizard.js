@@ -271,7 +271,5 @@ module.exports = {
 		// 	}
 		// })
 
-		//https://eu.mouseflow.com/websites/3d6fc486-2914-4efc-a5ae-35a5eac972f2/recordings?vars=spoorId%3Dciofi1w6k00003i77u3g8qyg3
-
 	}
 }
