@@ -8,4 +8,4 @@ charts:
   -
     question: How many people use the search functionality for each device type?
     name: search/users/devices
-    query: "page:view->count(device.spoorId)->group(device.primaryHardwareType)->filter(page.location.search)"
+    query: "page:view->count(device.spoorId)->group(device.primaryHardwareType)->filter(page.location.search)->tidy(true)"
