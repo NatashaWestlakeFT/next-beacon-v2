@@ -147,10 +147,6 @@ module.exports = {
 				'spoorIds': ['fakespoorid','ciofi1w6k00003i77u3g8qyg3','another'],
 				'params' : {
 					'entry': '/signup'
-					'browser': 'chrome',
-					'device': 'desktop',
-					'fromdate': '2015-10-04',
-					'todate': '2016-10-15'
 				}
 			}
 

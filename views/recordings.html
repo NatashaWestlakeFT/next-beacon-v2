@@ -1,4 +1,4 @@
-<table class="o-table o-table--responsive-scroll" data-o-component="o-table">
+<table class="o-table o-table--compact" data-o-component="o-table">
 	<thead>
 		<th>Recording</th>
 		<th>Duration</th>
@@ -7,7 +7,7 @@
 	<tbody>
 		{{#each .}}
 		<tr>
-			<td>{{spoorId}}</td>
+			<td><a href="{{url}}" target="_blank">{{spoorId}}</a></td>
 			<td>{{duration}}</td>
 			<td>{{pages}}</td>
 		</tr>
